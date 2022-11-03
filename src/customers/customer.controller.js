@@ -1,10 +1,15 @@
 const { SUCCESS_MESSAGE, ERROR_MESSAGE } = require("../../utils/messages")
 const { INTERNAL_SERVER_ERROR, CREATED, BAD_REQUEST, OK } = require("../../utils/statusCodes")
+const validateCustomerSignUp = require("../../validations/create_user.validation")
 const customerService = require("./customer.service")
 
 class CustomerController {
   createCustomer = async (req, res, next) => {
     const { manageAsyncOps, manageApplicationErrors } = req.context
+
+    const validation = validateCustomerSignUp(req.body)
+
+    if (!validation.success) return next(manageApplicationErrors({ message: validation.msg, statusCode: BAD_REQUEST}))
 
     const [error, response] = await manageAsyncOps(customerService.createCustomer(req.body))
 

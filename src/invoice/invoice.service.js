@@ -25,7 +25,6 @@ class InvoiceService {
 
       if (!fetchDiscount.success) return { success: false, msg: ERROR_MESSAGE.APP_ERROR }
 
-      console.log("fetch", fetchDiscount)
       const value = fetchDiscount.discounts[0].percent / 100
       discountValue = cost - ( value * cost )
     } else if (cost > 100) {
